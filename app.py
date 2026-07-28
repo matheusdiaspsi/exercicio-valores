@@ -241,7 +241,7 @@ if modo == "Área do Paciente":
 # -------------------------------------------------------------------
 # MODO TERAPEUTA
 # -------------------------------------------------------------------
-elif modo == "Painel da Psicóloga":
+elif modo == "Painel do Psicólogo":
     st.title("🔒 Painel de Análise Clínica")
     senha = st.text_input("Senha de Acesso:", type="password")
 
