@@ -204,39 +204,39 @@ if modo == "Área do Paciente":
                  opcoes_finais = LISTA_VALORES # Fallback caso não tenha marcado nenhum
 
              with st.form("form_etapa_2"):
-             top_1 = st.selectbox("1º Valor Principal (Mais Importante):", ["Selecione..."] + opcoes_finais)
-             top_2 = st.selectbox("2º Valor Principal:", ["Selecione..."] + opcoes_finais)
-             top_3 = st.selectbox("3º Valor Principal:", ["Selecione..."] + opcoes_finais)
-             top_4 = st.selectbox("4º Valor (Secundário):", ["Selecione..."] + opcoes_finais)
+                 top_1 = st.selectbox("1º Valor Principal (Mais Importante):", ["Selecione..."] + opcoes_finais)
+                 top_2 = st.selectbox("2º Valor Principal:", ["Selecione..."] + opcoes_finais)
+                 top_3 = st.selectbox("3º Valor Principal:", ["Selecione..."] + opcoes_finais)
+                 top_4 = st.selectbox("4º Valor (Secundário):", ["Selecione..."] + opcoes_finais)
 
-             finalizar = st.form_submit_button("Concluir e Enviar Exercício ✅")
+                 finalizar = st.form_submit_button("Concluir e Enviar Exercício ✅")
 
-             if finalizar:
-                   if top_1 == "Selecione..." or top_2 == "Selecione..." or top_3 == "Selecione...":
-                       st.error("Por favor, selecione pelo menos os 3 Valores Principais antes de finalizar.")
-                   else:
-                       data_hoje = datetime.now().strftime("%d-%m-%Y %H:%M")
-                       respostas_areas = st.session_state["temp_respostas_areas"]
-                       str_muito_imp = ", ".join(muito_importantes)
+                 if finalizar:
+                     if top_1 == "Selecione..." or top_2 == "Selecione..." or top_3 == "Selecione...":
+                         st.error("Por favor, selecione pelo menos os 3 Valores Principais antes de finalizar.")
+                     else:
+                         data_hoje = datetime.now().strftime("%d-%m-%Y %H:%M")
+                         respostas_areas = st.session_state["temp_respostas_areas"]
+                         str_muito_imp = ", ".join(muito_importantes)
 
-                       registros_finais = []
-                       for item in respostas_areas:
-                           item.update({
-                               "Data": data_hoje,
-                               "Paciente_ID": paciente_id,
-                               "Top_1": top_1, "Top_2": top_2, "Top_3": top_3, "Top_4": top_4,
-                               "Status": "Concluido",
-                               "Valores_Muito_Importantes": str_muito_imp
-                           })
-                           registros_finais.append(item)
-                        df_novos = pd.DataFrame(registros_finais)
-                        df_atualizado = pd.concat([df_dados, df_novos], ignore_index=True) if not df_dados.empty else df_novos
-                        conn.update(data=df_atualizado)
+                         registros_finais = []
+                         for item in respostas_areas:
+                             item.update({
+                                 "Data": data_hoje,
+                                 "Paciente_ID": paciente_id,
+                                 "Top_1": top_1, "Top_2": top_2, "Top_3": top_3, "Top_4": top_4,
+                                 "Status": "Concluido",
+                                 "Valores_Muito_Importantes": str_muito_imp
+                             })
+                             registros_finais.append(item)
+                         df_novos = pd.DataFrame(registros_finais)
+                         df_atualizado = pd.concat([df_dados, df_novos], ignore_index=True) if not df_dados.empty else df_novos
+                         conn.update(data=df_atualizado)
                         
-                        # Limpar sessão
-                        st.session_state["etapa_paciente"] = 1
-                        st.success("✅ Exercício finalizado com sucesso! Suas respostas foram registradas.")
-                        st.rerun()
+                         # Limpar sessão
+                         st.session_state["etapa_paciente"] = 1
+                         st.success("✅ Exercício finalizado com sucesso! Suas respostas foram registradas.")
+                         st.rerun()
 
 # -------------------------------------------------------------------
 # MODO TERAPEUTA
