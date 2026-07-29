@@ -154,7 +154,7 @@ if modo == "Área do Paciente":
             
             Nem todas as pessoas irão valorizar ou avaliá-las da mesma forma.
             
-            Solicito que pense na importância que você atribui a cada uma delas para a sua vida, independentemente da sua situação atual.
+            Solicito que pense na importância que você atribui a cada uma delas para a sua vida, independentemente da sua situação atual.\n
             Por exemplo, atualmente você pode não estar trabalhando ou não ser pai ou mãe, mas valorizar o trabalho ou desejar ser pai ou mãe durante a sua vida.
             
             ---
