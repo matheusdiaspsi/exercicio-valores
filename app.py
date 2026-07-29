@@ -127,29 +127,39 @@ if modo == "Área do Paciente":
         if status_atual == "Concluido":
             st.info("✅ **Exercício Concluído!** Suas respostas das 3 etapas foram salvas com segurança e serão analisadas em conjunto nas próximas sessões.")
             st.stop()
-
-        # Explicação geral e visão das 3 etapas
-            st.markdown("""
-            ### 💡 O que são Valores?
-            Valores são como **bússolas internas**. Eles representam aquilo que é mais importante para você como ser humano,
-            indicando as direções em que deseja caminhar. 
-            Diferente de *metas* (que têm um fim), valores são um *modo de viver contínuo*.
-    
-            ---
-            📌 **Este exercício é dividido em 3 etapas:**
-            * **Etapa 1:** Serão listadas as áreas da vida valorizadas pela maioria das pessoas.
-            Você classificará cada área de acordo com a sua visão pessoal, atribuindo notas de 1 a 10 sob 6 perspectivas diferentes.
-            * **Etapa 2:** Você classificará uma lista de valores em grau de importância (*Muito Importante*, *Importante* ou *Não Importante*).
-            * **Etapa 3:** Você definirá quais são os seus 3 Valores Principais e 1 Valor Secundário.
-    
-            *💡 Seu progresso é salvo automaticamente ao final de cada etapa!*
-            ---
-            """)
-
+            
         # --- ETAPA 1 DE 3: AVALIAÇÃO DAS ÁREAS DA VIDA ---
         elif status_atual in ["Pendente Etapa 1", "Pendente"]:
-            st.header("📌 Etapa 1 de 3: Avaliação das Áreas da Vida")
-            st.markdown("""
+            # Controle de exibição da tela inicial
+            if "iniciou_etapa1" not in st.session_state:
+                st.session_state["iniciou_etapa1"] = False
+
+            # TELA DE PRÉVIA / BOAS-VINDAS
+            if not st.session_state["iniciou_etapa1"]:
+                st.markdown("""
+                ### 💡 O que são Valores?
+                Valores são como **bússolas internas**. Eles representam aquilo que é mais importante para você como ser humano,
+                indicando as direções em que deseja caminhar. 
+                Diferente de *metas* (que têm um fim), valores são um *modo de viver contínuo*.
+        
+                ---
+                📌 **Este exercício é dividido em 3 etapas:**
+                * **Etapa 1:** Serão listadas as áreas da vida valorizadas pela maioria das pessoas.
+                Você classificará cada área de acordo com a sua visão pessoal, atribuindo notas de 1 a 10 sob 6 perspectivas diferentes.
+                * **Etapa 2:** Você classificará uma lista de valores em grau de importância (*Muito Importante*, *Importante* ou *Não Importante*).
+                * **Etapa 3:** Você definirá quais são os seus 3 Valores Principais e 1 Valor Secundário.
+        
+                *💡 Seu progresso é salvo automaticamente ao final de cada etapa!*
+                ---
+                """)
+                if st.button("Começar Etapa 1 ➡️", type="primary"):
+                    st.session_state["iniciou_etapa1"] = True
+                    st.rerun()
+
+            # FORMULÁRIO DA ETAPA 1 (Aparece após clicar no botão)
+            else:
+                st.header("📌 Etapa 1 de 3: Avaliação das Áreas da Vida")
+                st.markdown("""
             Avalie a importância que você dá a cada uma dessas áreas para a sua vida. Nem todas as pessoas irão valorizar ou avaliá-las da mesma forma.
             
             Solicito que pense na importância que você atribui a cada uma delas para a sua vida, independentemente da sua situação atual.
@@ -159,7 +169,6 @@ if modo == "Área do Paciente":
             **A avaliação de cada área será a partir de 6 aspectos.**
             Avalie cada aspecto em uma escala de 1 a 10.
             * **Possibilidade:** O quanto é possível que alguma coisa *muito significativa* aconteça nessa área da sua vida?
-            ---
             1 significa que não é possível de forma alguma, e 10 significa que é muito possível. 
             * **Imp. Atual:** O quanto esta área é importante *neste momento* na sua vida?
             1 significa que não é importante de forma alguma, e 10 significa que é muito importante.
@@ -175,49 +184,49 @@ if modo == "Área do Paciente":
             """)
 
             with st.form("form_etapa_1"):
-                respostas_areas = []
-                for area in AREAS_VIDA:
-                    st.subheader(f"📍 {area}")
-                    c1, c2, c3 = st.columns(3)
-                    with c1:
-                        pos = st.slider(f"Possibilidade", 1, 10, 5, key=f"pos_{area}")
-                        imp_at = st.slider(f"Imp. Atual", 1, 10, 5, key=f"impat_{area}")
-                    with c2:
-                        imp_ge = st.slider(f"Imp. Geral", 1, 10, 5, key=f"impge_{area}")
-                        act = st.slider(f"Ação (Últ. Semana)", 1, 10, 5, key=f"act_{area}")
-                    with c3:
-                        sat = st.slider(f"Satisfação c/ Ação", 1, 10, 5, key=f"sat_{area}")
-                        pre = st.slider(f"Preocupação", 1, 10, 5, key=f"pre_{area}")
-                    
-                    respostas_areas.append({
-                        "Area": area, "Possibilidade": pos, "Imp_Atual": imp_at,
-                        "Imp_Geral": imp_ge, "Acao": act, "Satisfacao": sat, "Preocupacao": pre
-                    })
-
-                salvar_etapa_1 = st.form_submit_button("💾 Salvar Etapa 1 e Ir para a Etapa 2 ➡️")
-                
-                if salvar_etapa_1:
-                    data_hoje = datetime.now().strftime("%d-%m-%Y %H:%M")
-                    
-                    novos_registros = []
-                    for item in respostas_areas:
-                        item.update({
-                            "Data": data_hoje,
-                            "Paciente_ID": paciente_id,
-                            "Top_1": "", "Top_2": "", "Top_3": "", "Top_4": "",
-                            "Status": "Etapa 1 Concluida",
-                            "Valores_Muito_Importantes": "",
-                            "Valores_Importantes": ""
+                    respostas_areas = []
+                    for area in AREAS_VIDA:
+                        st.subheader(f"📍 {area}")
+                        c1, c2, c3 = st.columns(3)
+                        with c1:
+                            pos = st.slider(f"Possibilidade", 1, 10, 5, key=f"pos_{area}")
+                            imp_at = st.slider(f"Imp. Atual", 1, 10, 5, key=f"impat_{area}")
+                        with c2:
+                            imp_ge = st.slider(f"Imp. Geral", 1, 10, 5, key=f"impge_{area}")
+                            act = st.slider(f"Ação (Últ. Semana)", 1, 10, 5, key=f"act_{area}")
+                        with c3:
+                            sat = st.slider(f"Satisfação c/ Ação", 1, 10, 5, key=f"sat_{area}")
+                            pre = st.slider(f"Preocupação", 1, 10, 5, key=f"pre_{area}")
+                        
+                        respostas_areas.append({
+                            "Area": area, "Possibilidade": pos, "Imp_Atual": imp_at,
+                            "Imp_Geral": imp_ge, "Acao": act, "Satisfacao": sat, "Preocupacao": pre
                         })
-                        novos_registros.append(item)
+
+                    salvar_etapa_1 = st.form_submit_button("💾 Salvar Etapa 1 e Ir para a Etapa 2 ➡️")
                     
-                    df_novos = pd.DataFrame(novos_registros)
-                    df_limpo = df_dados[df_dados["Paciente_ID"].astype(str).str.lower() != paciente_id]
-                    df_atualizado = pd.concat([df_limpo, df_novos], ignore_index=True)
-                    
-                    conn.update(data=df_atualizado)
-                    st.success("🎉 **Etapa 1 concluída!** Avançando para a Etapa 2...")
-                    st.rerun()
+                    if salvar_etapa_1:
+                        data_hoje = datetime.now().strftime("%d-%m-%Y %H:%M")
+                        
+                        novos_registros = []
+                        for item in respostas_areas:
+                            item.update({
+                                "Data": data_hoje,
+                                "Paciente_ID": paciente_id,
+                                "Top_1": "", "Top_2": "", "Top_3": "", "Top_4": "",
+                                "Status": "Etapa 1 Concluida",
+                                "Valores_Muito_Importantes": "",
+                                "Valores_Importantes": ""
+                            })
+                            novos_registros.append(item)
+                        
+                        df_novos = pd.DataFrame(novos_registros)
+                        df_limpo = df_dados[df_dados["Paciente_ID"].astype(str).str.lower() != paciente_id]
+                        df_atualizado = pd.concat([df_limpo, df_novos], ignore_index=True)
+                        
+                        conn.update(data=df_atualizado)
+                        st.success("🎉 **Etapa 1 concluída!** Avançando para a Etapa 2...")
+                        st.rerun()
 
         # --- ETAPA 2 DE 3: CLASSIFICAÇÃO DOS VALORES ---
         elif status_atual == "Etapa 1 Concluida":
