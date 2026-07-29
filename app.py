@@ -6,13 +6,35 @@ from streamlit_gsheets import GSheetsConnection
 import streamlit.components.v1 as components
 
 def rolar_para_topo():
+    # 1. Cria uma marcação invisível no topo da página
+    st.markdown('<div id="topo-da-pagina"></div>', unsafe_allow_html=True)
+    
+    # 2. Executa o JavaScript com um pequeno atraso (150ms)
     components.html(
         """
         <script>
-            var mainContent = window.parent.document.querySelector('section.main');
-            if (mainContent) {
-                mainContent.scrollTo(0, 0);
-            }
+            setTimeout(function() {
+                // Tenta focar na âncora do topo
+                var topo = window.parent.document.getElementById('topo-da-pagina');
+                if (topo) {
+                    topo.scrollIntoView({ behavior: 'auto', block: 'start' });
+                }
+                
+                // Força a rolagem em todos os contêineres possíveis do Streamlit
+                var conteineres = [
+                    window.parent.document.querySelector('section.main'),
+                    window.parent.document.querySelector('[data-testid="stMain"]'),
+                    window.parent.document.querySelector('[data-testid="stAppViewContainer"]'),
+                    window.parent.document.documentElement,
+                    window.parent.document.body
+                ];
+                
+                conteineres.forEach(function(c) {
+                    if (c) {
+                        c.scrollTop = 0;
+                    }
+                });
+            }, 150); // Aguarda 150ms para o Streamlit renderizar a tela completamente
         </script>
         """,
         height=0
