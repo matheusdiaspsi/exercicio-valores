@@ -9,7 +9,8 @@ st.set_page_config(page_title="Mapeamento e Bússola de Valores", page_icon="�
 # Conexão com a planilha do Google Sheets via Secrets
 conn = st.connection("gsheets", type=GSheetsConnection)
 
-SENHA_TERAPEUTA = "314159"  # <--- Mude para a sua senha pessoal
+# Senha do terapeuta (prioriza o st.secrets, com fallback para a senha padrão)
+SENHA_TERAPEUTA = st.secrets.get("SENHA_TERAPEUTA", "314159")
 
 # Lista das Áreas da Vida
 AREAS_VIDA = [
@@ -70,7 +71,7 @@ LISTA_VALORES = [
     "35. Bondade – Ser gentil, compassivo(a) e cuidadoso(a) comigo ou com os outros",
     "36. Amor – Agir com amor ou afeto comigo ou com os outros",
     "37. Atenção plena – Estar consciente, aberto(a) e curioso(a) sobre minha experiência no momento presente",
-    "38. Ordem – Ser organizado(a) e manter a ordem",
+    "38. Ordem – Ser organized(a) e manter a ordem",
     "39. Abertura de mente – Considerar outros pontos de vista e avaliar evidências de forma justa",
     "40. Paciência – Esperar calmamente pelo que quero",
     "41. Persistência – Continuar apesar de problemas ou dificuldades",
@@ -130,7 +131,6 @@ if modo == "Área do Paciente":
             
         # --- ETAPA 1 DE 3: AVALIAÇÃO DAS ÁREAS DA VIDA ---
         elif status_atual in ["Pendente Etapa 1", "Pendente"]:
-            # Cria uma chave única baseada no código do paciente
             key_inicio = f"iniciou_etapa1_{paciente_id}"
 
             if key_inicio not in st.session_state:
@@ -143,11 +143,11 @@ if modo == "Área do Paciente":
                 Valores são como **bússolas internas**.<br>
                 Eles representam aquilo que é mais importante para você como ser humano, indicando as direções em que deseja caminhar.<br> 
                 Diferente de metas (que têm um fim), valores são um **modo de viver contínuo**.
-        
+                
                 ---
                 📌 **Este exercício é dividido em 3 etapas:**
                 * **Etapa 1:** Serão listadas as áreas da vida valorizadas pela maioria das pessoas.<br>
-                Você classificará cada área de acordo com a sua visão pessoal, atribuindo notas de 1 a 10 sob 6 perspectivas diferentes.
+                  Você classificará cada área de acordo com a sua visão pessoal, atribuindo notas de 1 a 10 sob 6 perspectivas diferentes.
                 * **Etapa 2:** Você classificará uma lista de valores em grau de importância (*Muito Importante*, *Importante* ou *Não Importante*).
                 * **Etapa 3:** Você definirá quais são os seus 3 Valores Principais e 1 Valor Secundário.
                 ---
@@ -157,7 +157,7 @@ if modo == "Área do Paciente":
                     st.session_state[key_inicio] = True
                     st.rerun()
 
-            # FORMULÁRIO DA ETAPA 1 (Aparece após clicar no botão)
+            # FORMULÁRIO DA ETAPA 1
             else:
                 st.header("📌 Etapa 1 de 3: Avaliação das Áreas da Vida")
                 st.markdown("""
@@ -171,64 +171,64 @@ if modo == "Área do Paciente":
                 **A avaliação de cada área será a partir de 6 aspectos.**<br>
                 Avalie cada aspecto em uma escala de 1 a 10.
                 * **Possibilidade:** O quanto é possível que alguma coisa *muito significativa* aconteça nessa área da sua vida?<br>
-                1 significa que não é possível de forma alguma, e 10 significa que é muito possível. 
+                  1 significa que não é possível de forma alguma, e 10 significa que é muito possível. 
                 * **Imp. Atual:** O quanto esta área é importante *neste momento* na sua vida?<br>
-                1 significa que não é importante de forma alguma, e 10 significa que é muito importante.
+                  1 significa que não é importante de forma alguma, e 10 significa que é muito importante.
                 * **Imp. Geral:** O quanto esta área é importante *como um todo*?<br>
-                1 significa que não é importante de forma alguma, e 10 significa que é muito importante. 
+                  1 significa que não é importante de forma alguma, e 10 significa que é muito importante. 
                 * **Ação:** O quanto você atuou a serviço desta área durante a *semana passada*?<br>
-                1 significa que você não foi ativo de forma alguma com este valor, e 10 significa que você foi muito ativo. 
+                  1 significa que você não foi ativo de forma alguma com este valor, e 10 significa que você foi muito ativo. 
                 * **Satisfação:** O quanto você está satisfeito com seu nível de ação nesta área durante a *semana passada*?<br>
-                1 significa que você não está satisfeito de forma alguma, e 10 significa que você está plenamente satisfeito com seu nível de ação nesta área. 
+                  1 significa que você não está satisfeito de forma alguma, e 10 significa que você está plenamente satisfeito com seu nível de ação nesta área. 
                 * **Preocupação:** O quanto você está preocupado com a possibilidade de esta área não progredir como você deseja?<br>
-                1 significa que você não está preocupado de forma alguma, e 10 significa que você está muito preocupado. 
+                  1 significa que você não está preocupado de forma alguma, e 10 significa que você está muito preocupado. 
                 ---
                 """, unsafe_allow_html=True)
 
                 with st.form("form_etapa_1"):
-                        respostas_areas = []
-                        for area in AREAS_VIDA:
-                            st.subheader(f"📍 {area}")
-                            c1, c2, c3 = st.columns(3)
-                            with c1:
-                                pos = st.slider(f"Possibilidade", 1, 10, 5, key=f"pos_{area}")
-                                imp_at = st.slider(f"Imp. Atual", 1, 10, 5, key=f"impat_{area}")
-                            with c2:
-                                imp_ge = st.slider(f"Imp. Geral", 1, 10, 5, key=f"impge_{area}")
-                                act = st.slider(f"Ação (Últ. Semana)", 1, 10, 5, key=f"act_{area}")
-                            with c3:
-                                sat = st.slider(f"Satisfação c/ Ação", 1, 10, 5, key=f"sat_{area}")
-                                pre = st.slider(f"Preocupação", 1, 10, 5, key=f"pre_{area}")
-                            
-                            respostas_areas.append({
-                                "Area": area, "Possibilidade": pos, "Imp_Atual": imp_at,
-                                "Imp_Geral": imp_ge, "Acao": act, "Satisfacao": sat, "Preocupacao": pre
-                            })
-    
-                        salvar_etapa_1 = st.form_submit_button("💾 Salvar Etapa 1 e Ir para a Etapa 2 ➡️")
+                    respostas_areas = []
+                    for area in AREAS_VIDA:
+                        st.subheader(f"📍 {area}")
+                        c1, c2, c3 = st.columns(3)
+                        with c1:
+                            pos = st.slider("Possibilidade", 1, 10, 5, key=f"pos_{area}")
+                            imp_at = st.slider("Imp. Atual", 1, 10, 5, key=f"impat_{area}")
+                        with c2:
+                            imp_ge = st.slider("Imp. Geral", 1, 10, 5, key=f"impge_{area}")
+                            act = st.slider("Ação (Últ. Semana)", 1, 10, 5, key=f"act_{area}")
+                        with c3:
+                            sat = st.slider("Satisfação c/ Ação", 1, 10, 5, key=f"sat_{area}")
+                            pre = st.slider("Preocupação", 1, 10, 5, key=f"pre_{area}")
                         
-                        if salvar_etapa_1:
-                            data_hoje = datetime.now().strftime("%d-%m-%Y %H:%M")
-                            
-                            novos_registros = []
-                            for item in respostas_areas:
-                                item.update({
-                                    "Data": data_hoje,
-                                    "Paciente_ID": paciente_id,
-                                    "Top_1": "", "Top_2": "", "Top_3": "", "Top_4": "",
-                                    "Status": "Etapa 1 Concluida",
-                                    "Valores_Muito_Importantes": "",
-                                    "Valores_Importantes": ""
-                                })
-                                novos_registros.append(item)
-                            
-                            df_novos = pd.DataFrame(novos_registros)
-                            df_limpo = df_dados[df_dados["Paciente_ID"].astype(str).str.lower() != paciente_id]
-                            df_atualizado = pd.concat([df_limpo, df_novos], ignore_index=True)
-                            
-                            conn.update(data=df_atualizado)
-                            st.success("🎉 **Etapa 1 concluída!** Avançando para a Etapa 2...")
-                            st.rerun()
+                        respostas_areas.append({
+                            "Area": area, "Possibilidade": pos, "Imp_Atual": imp_at,
+                            "Imp_Geral": imp_ge, "Acao": act, "Satisfacao": sat, "Preocupacao": pre
+                        })
+                    
+                    salvar_etapa_1 = st.form_submit_button("💾 Salvar Etapa 1 e Ir para a Etapa 2 ➡️")
+                    
+                    if salvar_etapa_1:
+                        data_hoje = datetime.now().strftime("%d-%m-%Y %H:%M")
+                        
+                        novos_registros = []
+                        for item in respostas_areas:
+                            item.update({
+                                "Data": data_hoje,
+                                "Paciente_ID": paciente_id,
+                                "Top_1": "", "Top_2": "", "Top_3": "", "Top_4": "",
+                                "Status": "Etapa 1 Concluida",
+                                "Valores_Muito_Importantes": "",
+                                "Valores_Importantes": ""
+                            })
+                            novos_registros.append(item)
+                        
+                        df_novos = pd.DataFrame(novos_registros)
+                        df_limpo = df_dados[df_dados["Paciente_ID"].astype(str).str.lower() != paciente_id]
+                        df_atualizado = pd.concat([df_limpo, df_novos], ignore_index=True)
+                        
+                        conn.update(data=df_atualizado)
+                        st.success("🎉 **Etapa 1 concluída!** Avançando para a Etapa 2...")
+                        st.rerun()
 
         # --- ETAPA 2 DE 3: CLASSIFICAÇÃO DOS VALORES ---
         elif status_atual == "Etapa 1 Concluida":
@@ -240,7 +240,6 @@ if modo == "Área do Paciente":
             Leia a lista de valores abaixo e classifique cada um como **Muito Importante**, **Importante** ou **Não Importante** para você neste momento da sua vida:
             """, unsafe_allow_html=True)
 
-            # Estilo CSS para aumentar o texto das opções dos radio buttons
             st.markdown("""
             <style>
                 div[role="radiogroup"] label p {
@@ -254,17 +253,15 @@ if modo == "Área do Paciente":
                 classificacao_valores = {}
                 
                 for val in LISTA_VALORES:
-                    # 1. Título do valor aumentado (use #### para H4 ou ajuste o font-size em pixels)
-                    st.markdown(f"<p style='font-size: 20px; font-weight: bold; margin-bottom: 0px;'>{val}</p>", unsafe_allow_html=True)
+                    st.markdown(f"<p style='font-size: 18px; font-weight: bold; margin-bottom: 0px;'>{val}</p>", unsafe_allow_html=True)
                     
-                    # 2. Seletor sem o rótulo duplicado
                     classificacao_valores[val] = st.radio(
                         label=val,
                         options=["Sem Resposta", "Não Importante", "Importante", "Muito Importante"],
                         index=0,
                         key=f"val_{val}",
                         horizontal=True,
-                        label_visibility="collapsed"  # Esconde o rótulo interno do radio
+                        label_visibility="collapsed"
                     )
 
                 salvar_etapa_2 = st.form_submit_button("💾 Salvar Etapa 2 e Ir para a Etapa 3 ➡️")
@@ -276,13 +273,11 @@ if modo == "Área do Paciente":
                     str_muito_imp = " | ".join(muito_imp)
                     str_imp = " | ".join(imp)
 
-                    # CONVERTE AS COLUNAS PARA ACEITAR TEXTO (Evita o TypeError do Pandas)
                     cols_texto = ["Valores_Muito_Importantes", "Valores_Importantes", "Status", "Top_1", "Top_2", "Top_3", "Top_4"]
                     for col in cols_texto:
                         if col in df_dados.columns:
                             df_dados[col] = df_dados[col].astype(object)
 
-                    # Atualiza os registros existentes do paciente
                     indices = registros_paciente.index
                     for idx in indices:
                         df_dados.at[idx, "Valores_Muito_Importantes"] = str_muito_imp
@@ -324,8 +319,9 @@ if modo == "Área do Paciente":
                 if finalizar:
                     if top_1 == "Selecione..." or top_2 == "Selecione..." or top_3 == "Selecione...":
                         st.error("Por favor, selecione pelo menos os 3 Valores Principais antes de finalizar.")
+                    elif len({top_1, top_2, top_3}) < 3:
+                        st.error("Por favor, escolha valores diferentes para cada uma das 3 posições principais.")
                     else:
-                        # Converte colunas para aceitar texto
                         cols_texto = ["Top_1", "Top_2", "Top_3", "Top_4", "Status"]
                         for col in cols_texto:
                             if col in df_dados.columns:
@@ -336,7 +332,7 @@ if modo == "Área do Paciente":
                             df_dados.at[idx, "Top_1"] = top_1
                             df_dados.at[idx, "Top_2"] = top_2
                             df_dados.at[idx, "Top_3"] = top_3
-                            df_dados.at[idx, "Top_4"] = top_4
+                            df_dados.at[idx, "Top_4"] = top_4 if top_4 != "Selecione..." else ""
                             df_dados.at[idx, "Status"] = "Concluido"
                         
                         conn.update(data=df_dados)
@@ -425,21 +421,27 @@ elif modo == "Painel do Psicólogo":
                             default=["Imp_Geral", "Acao", "Preocupacao"]
                         )
 
-                        fig = go.Figure()
-                        for metrica in metricas_selecionadas:
-                            fig.add_trace(go.Scatterpolar(
-                                r=d_pac[metrica],
-                                theta=d_pac["Area"],
-                                fill='toself',
-                                name=metrica
-                            ))
+                        # Filtro para ignorar linhas de cadastro sem área definida
+                        d_pac_areas = d_pac[d_pac["Area"].astype(str).str.strip() != ""]
 
-                        fig.update_layout(
-                            polar=dict(radialaxis=dict(visible=True, range=[0, 10])),
-                            showlegend=True,
-                            height=650
-                        )
-                        st.plotly_chart(fig, use_container_width=True)
+                        if not d_pac_areas.empty:
+                            fig = go.Figure()
+                            for metrica in metricas_selecionadas:
+                                fig.add_trace(go.Scatterpolar(
+                                    r=d_pac_areas[metrica],
+                                    theta=d_pac_areas["Area"],
+                                    fill='toself',
+                                    name=metrica
+                                ))
+
+                            fig.update_layout(
+                                polar=dict(radialaxis=dict(visible=True, range=[0, 10])),
+                                showlegend=True,
+                                height=650
+                            )
+                            st.plotly_chart(fig, use_container_width=True)
+                        else:
+                            st.info("O paciente ainda não possui respostas registradas para as áreas da vida.")
 
                         st.divider()
                         st.subheader("2. Principais Valores do Paciente")
