@@ -138,7 +138,7 @@ if modo == "Área do Paciente":
             if not st.session_state["iniciou_etapa1"]:
                 st.markdown("""
                 ### 💡 O que são Valores?
-                Valores são como **bússolas internas**.\
+                Valores são como **bússolas internas**.<br>
                 Eles representam aquilo que é mais importante para você como ser humano, indicando as direções em que deseja caminhar. 
                 Diferente de metas (que têm um fim), valores são um **modo de viver contínuo**.
         
@@ -151,7 +151,7 @@ if modo == "Área do Paciente":
         
                 *💡 Seu progresso é salvo automaticamente ao final de cada etapa!*
                 ---
-                """)
+                """, unsafe_allow_html=True)
                 if st.button("Começar Etapa 1 ➡️", type="primary"):
                     st.session_state["iniciou_etapa1"] = True
                     st.rerun()
