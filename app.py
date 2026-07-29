@@ -139,18 +139,17 @@ if modo == "Área do Paciente":
                 st.markdown("""
                 ### 💡 O que são Valores?
                 Valores são como **bússolas internas**.<br>
-                Eles representam aquilo que é mais importante para você como ser humano, indicando as direções em que deseja caminhar. 
+                Eles representam aquilo que é mais importante para você como ser humano, indicando as direções em que deseja caminhar.<br> 
                 Diferente de metas (que têm um fim), valores são um **modo de viver contínuo**.
         
                 ---
                 📌 **Este exercício é dividido em 3 etapas:**
-                * **Etapa 1:** Serão listadas as áreas da vida valorizadas pela maioria das pessoas.
+                * **Etapa 1:** Serão listadas as áreas da vida valorizadas pela maioria das pessoas.<br>
                 Você classificará cada área de acordo com a sua visão pessoal, atribuindo notas de 1 a 10 sob 6 perspectivas diferentes.
                 * **Etapa 2:** Você classificará uma lista de valores em grau de importância (*Muito Importante*, *Importante* ou *Não Importante*).
                 * **Etapa 3:** Você definirá quais são os seus 3 Valores Principais e 1 Valor Secundário.
-        
-                *💡 Seu progresso é salvo automaticamente ao final de cada etapa!*
                 ---
+                *💡 Seu progresso é salvo automaticamente ao final de cada etapa!*
                 """, unsafe_allow_html=True)
                 if st.button("Começar Etapa 1 ➡️", type="primary"):
                     st.session_state["iniciou_etapa1"] = True
