@@ -276,6 +276,12 @@ if modo == "Área do Paciente":
                     str_muito_imp = " | ".join(muito_imp)
                     str_imp = " | ".join(imp)
 
+                    # CONVERTE AS COLUNAS PARA ACEITAR TEXTO (Evita o TypeError do Pandas)
+                    cols_texto = ["Valores_Muito_Importantes", "Valores_Importantes", "Status", "Top_1", "Top_2", "Top_3", "Top_4"]
+                    for col in cols_texto:
+                        if col in df_dados.columns:
+                            df_dados[col] = df_dados[col].astype(object)
+
                     # Atualiza os registros existentes do paciente
                     indices = registros_paciente.index
                     for idx in indices:
@@ -319,6 +325,12 @@ if modo == "Área do Paciente":
                     if top_1 == "Selecione..." or top_2 == "Selecione..." or top_3 == "Selecione...":
                         st.error("Por favor, selecione pelo menos os 3 Valores Principais antes de finalizar.")
                     else:
+                        # Converte colunas para aceitar texto
+                        cols_texto = ["Top_1", "Top_2", "Top_3", "Top_4", "Status"]
+                        for col in cols_texto:
+                            if col in df_dados.columns:
+                                df_dados[col] = df_dados[col].astype(object)
+
                         indices = registros_paciente.index
                         for idx in indices:
                             df_dados.at[idx, "Top_1"] = top_1
