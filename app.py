@@ -150,16 +150,16 @@ if modo == "Área do Paciente":
         elif status_atual in ["Pendente Etapa 1", "Pendente"]:
             st.header("📌 Etapa 1 de 3: Avaliação das Áreas da Vida")
             st.markdown("""
-            Avalie a importância que você dá a cada uma dessas áreas para a sua vida.
+            Avalie a importância que você dá a cada uma dessas áreas para a sua vida. Nem todas as pessoas irão valorizar ou avaliá-las da mesma forma.
             
-            Nem todas as pessoas irão valorizar ou avaliá-las da mesma forma.
-            
-            Solicito que pense na importância que você atribui a cada uma delas para a sua vida, independentemente da sua situação atual.\nPor exemplo, atualmente você pode não estar trabalhando ou não ser pai ou mãe, mas valorizar o trabalho ou desejar ser pai ou mãe durante a sua vida.
+            Solicito que pense na importância que você atribui a cada uma delas para a sua vida, independentemente da sua situação atual.
+            Por exemplo, atualmente você pode não estar trabalhando ou não ser pai ou mãe, mas valorizar o trabalho ou desejar ser pai ou mãe durante a sua vida.
             
             ---
             **A avaliação de cada área será a partir de 6 aspectos.**
             Avalie cada aspecto em uma escala de 1 a 10.
             * **Possibilidade:** O quanto é possível que alguma coisa *muito significativa* aconteça nessa área da sua vida?
+            ---
             1 significa que não é possível de forma alguma, e 10 significa que é muito possível. 
             * **Imp. Atual:** O quanto esta área é importante *neste momento* na sua vida?
             1 significa que não é importante de forma alguma, e 10 significa que é muito importante.
