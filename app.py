@@ -130,12 +130,14 @@ if modo == "Área do Paciente":
             
         # --- ETAPA 1 DE 3: AVALIAÇÃO DAS ÁREAS DA VIDA ---
         elif status_atual in ["Pendente Etapa 1", "Pendente"]:
-            # Controle de exibição da tela inicial
-            if "iniciou_etapa1" not in st.session_state:
-                st.session_state["iniciou_etapa1"] = False
+            # Cria uma chave única baseada no código do paciente
+            key_inicio = f"iniciou_etapa1_{paciente_id}"
+
+            if key_inicio not in st.session_state:
+                st.session_state[key_inicio] = False
 
             # TELA DE PRÉVIA / BOAS-VINDAS
-            if not st.session_state["iniciou_etapa1"]:
+            if not st.session_state[key_inicio]:
                 st.markdown("""
                 ### 💡 O que são Valores?
                 Valores são como **bússolas internas**.<br>
@@ -152,7 +154,7 @@ if modo == "Área do Paciente":
                 💡 Seu progresso é salvo automaticamente ao final de cada etapa!
                 """, unsafe_allow_html=True)
                 if st.button("Começar Etapa 1 ➡️", type="primary"):
-                    st.session_state["iniciou_etapa1"] = True
+                    st.session_state[key_inicio] = True
                     st.rerun()
 
             # FORMULÁRIO DA ETAPA 1 (Aparece após clicar no botão)
