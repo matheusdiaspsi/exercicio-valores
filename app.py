@@ -234,23 +234,37 @@ if modo == "Área do Paciente":
         elif status_atual == "Etapa 1 Concluida":
             st.header("📌 Etapa 2 de 3: Classificação Inicial dos Valores")
             st.markdown("""
-            **O que são Valores?**
-            Valores são como **bússolas internas**. Eles representam aquilo que é mais importante para você como ser humano.
+            Valores são como **bússolas internas**.<br>
+            Eles representam aquilo que é mais importante para você como ser humano.
             
             Leia a lista de valores abaixo e classifique cada um como **Muito Importante**, **Importante** ou **Não Importante** para você neste momento da sua vida:
-            """)
+            """, unsafe_allow_html=True)
 
+            # Estilo CSS para aumentar o texto das opções dos radio buttons
+            st.markdown("""
+            <style>
+                div[role="radiogroup"] label p {
+                    font-size: 16px !important;
+                    font-weight: 500 !important;
+                }
+            </style>
+            """, unsafe_allow_html=True)
+            
             with st.form("form_etapa_2"):
                 classificacao_valores = {}
-                cols = st.columns(2)
-                for i, val in enumerate(LISTA_VALORES):
-                    col = cols[i % 1]
-                    classificacao_valores[val] = col.radio(
-                        f"**{val}**",
-                        ["Sem Resposta", "Não Importante", "Importante", "Muito Importante"],
+                
+                for val in LISTA_VALORES:
+                    # 1. Título do valor aumentado (use #### para H4 ou ajuste o font-size em pixels)
+                    st.markdown(f"<p style='font-size: 20px; font-weight: bold; margin-bottom: 0px;'>{val}</p>", unsafe_allow_html=True)
+                    
+                    # 2. Seletor sem o rótulo duplicado
+                    classificacao_valores[val] = st.radio(
+                        label=val,
+                        options=["Sem Resposta", "Não Importante", "Importante", "Muito Importante"],
                         index=0,
                         key=f"val_{val}",
-                        horizontal=True
+                        horizontal=True,
+                        label_visibility="collapsed"  # Esconde o rótulo interno do radio
                     )
 
                 salvar_etapa_2 = st.form_submit_button("💾 Salvar Etapa 2 e Ir para a Etapa 3 ➡️")
