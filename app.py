@@ -3,39 +3,48 @@ import pandas as pd
 import plotly.graph_objects as go
 from datetime import datetime
 from streamlit_gsheets import GSheetsConnection
+import time
 import streamlit.components.v1 as components
 
 def rolar_para_topo():
-    # 1. Cria uma marcação invisível no topo da página
-    st.markdown('<div id="topo-da-pagina"></div>', unsafe_allow_html=True)
+    # O timestamp garante que o Streamlit recarregue o script a cada chamada
+    timestamp = time.time()
     
-    # 2. Executa o JavaScript com um pequeno atraso (150ms)
     components.html(
-        """
+        f"""
         <script>
-            setTimeout(function() {
-                // Tenta focar na âncora do topo
-                var topo = window.parent.document.getElementById('topo-da-pagina');
-                if (topo) {
-                    topo.scrollIntoView({ behavior: 'auto', block: 'start' });
-                }
-                
-                // Força a rolagem em todos os contêineres possíveis do Streamlit
+            function rolar() {{
                 var conteineres = [
-                    window.parent.document.querySelector('section.main'),
                     window.parent.document.querySelector('[data-testid="stMain"]'),
+                    window.parent.document.querySelector('section.main'),
                     window.parent.document.querySelector('[data-testid="stAppViewContainer"]'),
                     window.parent.document.documentElement,
                     window.parent.document.body
                 ];
                 
-                conteineres.forEach(function(c) {
-                    if (c) {
+                conteineres.forEach(function(c) {{
+                    if (c) {{
                         c.scrollTop = 0;
-                    }
-                });
-            }, 150); // Aguarda 150ms para o Streamlit renderizar a tela completamente
+                    }}
+                }});
+                window.parent.scrollTo(0, 0);
+            }}
+
+            // 1. Tenta rolar imediatamente
+            rolar();
+
+            // 2. Continua forçando o topo a cada 80ms durante 1.2 segundos
+            // para vencer a renderização demorada dos componentes pesados
+            var tentativas = 0;
+            var intervalo = setInterval(function() {{
+                rolar();
+                tentativas++;
+                if (tentativas > 15) {{ // 15 x 80ms = ~1.2s de persistência
+                    clearInterval(intervalo);
+                }}
+            }}, 80);
         </script>
+        <!-- ID dinâmico: {timestamp} -->
         """,
         height=0
     )
