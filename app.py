@@ -242,7 +242,7 @@ if modo == "Área do Paciente":
 
             with st.form("form_etapa_2"):
                 classificacao_valores = {}
-                cols = st.columns(1)
+                cols = st.columns(2)
                 for i, val in enumerate(LISTA_VALORES):
                     col = cols[i % 1]
                     classificacao_valores[val] = col.radio(
