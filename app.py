@@ -149,7 +149,8 @@ if modo == "Área do Paciente":
                 * **Etapa 2:** Você classificará uma lista de valores em grau de importância (*Muito Importante*, *Importante* ou *Não Importante*).
                 * **Etapa 3:** Você definirá quais são os seus 3 Valores Principais e 1 Valor Secundário.
                 ---
-                *💡 Seu progresso é salvo automaticamente ao final de cada etapa!*
+                💡 Seu progresso é salvo automaticamente ao final de cada etapa!
+                ---
                 """, unsafe_allow_html=True)
                 if st.button("Começar Etapa 1 ➡️", type="primary"):
                     st.session_state["iniciou_etapa1"] = True
