@@ -3,6 +3,20 @@ import pandas as pd
 import plotly.graph_objects as go
 from datetime import datetime
 from streamlit_gsheets import GSheetsConnection
+import streamlit.components.v1 as components
+
+def rolar_para_topo():
+    components.html(
+        """
+        <script>
+            var mainContent = window.parent.document.querySelector('section.main');
+            if (mainContent) {
+                mainContent.scrollTo(0, 0);
+            }
+        </script>
+        """,
+        height=0
+    )
 
 st.set_page_config(page_title="Mapeamento e Bússola de Valores", page_icon="🧭", layout="wide")
 
@@ -159,6 +173,7 @@ if modo == "Área do Paciente":
 
             # FORMULÁRIO DA ETAPA 1
             else:
+                rolar_para_topo()
                 st.header("📌 Etapa 1 de 3: Avaliação das Áreas da Vida")
                 st.markdown("""
                 Avalie a importância que você dá a cada uma dessas áreas para a sua vida.<br>
@@ -232,6 +247,7 @@ if modo == "Área do Paciente":
 
         # --- ETAPA 2 DE 3: CLASSIFICAÇÃO DOS VALORES ---
         elif status_atual == "Etapa 1 Concluida":
+            rolar_para_topo()
             st.header("📌 Etapa 2 de 3: Classificação Inicial dos Valores")
             st.markdown("""
             Valores são como **bússolas internas**.<br>
@@ -290,6 +306,7 @@ if modo == "Área do Paciente":
 
         # --- ETAPA 3 DE 3: DEFINIÇÃO DAS BÚSSOLAS PRINCIPAIS ---
         elif status_atual == "Etapa 2 Concluida":
+            rolar_para_topo()
             st.header("🎯 Etapa 3 de 3: Definição dos Seus Principais Valores")
             st.markdown("Com base na sua classificação da etapa anterior, escolha agora os seus **3 Valores Principais** e **1 Valor Secundário** (opcional).")
 
