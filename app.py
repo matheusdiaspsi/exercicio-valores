@@ -151,8 +151,6 @@ if modo == "Área do Paciente":
                 ---
                 💡 Seu progresso é salvo automaticamente ao final de cada etapa!
                 """, unsafe_allow_html=True)
-
-                
                 if st.button("Começar Etapa 1 ➡️", type="primary"):
                     st.session_state["iniciou_etapa1"] = True
                     st.rerun()
@@ -161,28 +159,29 @@ if modo == "Área do Paciente":
             else:
                 st.header("📌 Etapa 1 de 3: Avaliação das Áreas da Vida")
                 st.markdown("""
-                Avalie a importância que você dá a cada uma dessas áreas para a sua vida. Nem todas as pessoas irão valorizar ou avaliá-las da mesma forma.
+                Avalie a importância que você dá a cada uma dessas áreas para a sua vida.<br>
+                Nem todas as pessoas irão valorizar ou avaliá-las da mesma forma.
                 
-                Solicito que pense na importância que você atribui a cada uma delas para a sua vida, independentemente da sua situação atual.
+                Solicito que pense na importância que você atribui a cada uma delas para a sua vida, independentemente da sua situação atual.<br>
                 Por exemplo, atualmente você pode não estar trabalhando ou não ser pai ou mãe, mas valorizar o trabalho ou desejar ser pai ou mãe durante a sua vida.
                 
                 ---
-                **A avaliação de cada área será a partir de 6 aspectos.**
+                **A avaliação de cada área será a partir de 6 aspectos.**<br>
                 Avalie cada aspecto em uma escala de 1 a 10.
-                * **Possibilidade:** O quanto é possível que alguma coisa *muito significativa* aconteça nessa área da sua vida?
+                * **Possibilidade:** O quanto é possível que alguma coisa *muito significativa* aconteça nessa área da sua vida?<br>
                 1 significa que não é possível de forma alguma, e 10 significa que é muito possível. 
-                * **Imp. Atual:** O quanto esta área é importante *neste momento* na sua vida?
+                * **Imp. Atual:** O quanto esta área é importante *neste momento* na sua vida?<br>
                 1 significa que não é importante de forma alguma, e 10 significa que é muito importante.
-                * **Imp. Geral:** O quanto esta área é importante *como um todo*?
+                * **Imp. Geral:** O quanto esta área é importante *como um todo*?<br>
                 1 significa que não é importante de forma alguma, e 10 significa que é muito importante. 
-                * **Ação:** O quanto você atuou a serviço desta área durante a *semana passada*?
+                * **Ação:** O quanto você atuou a serviço desta área durante a *semana passada*?<br>
                 1 significa que você não foi ativo de forma alguma com este valor, e 10 significa que você foi muito ativo. 
-                * **Satisfação:** O quanto você está satisfeito com seu nível de ação nesta área durante a *semana passada*?
+                * **Satisfação:** O quanto você está satisfeito com seu nível de ação nesta área durante a *semana passada*?<br>
                 1 significa que você não está satisfeito de forma alguma, e 10 significa que você está plenamente satisfeito com seu nível de ação nesta área. 
-                * **Preocupação:** O quanto você está preocupado com a possibilidade de esta área não progredir como você deseja?
+                * **Preocupação:** O quanto você está preocupado com a possibilidade de esta área não progredir como você deseja?<br>
                 1 significa que você não está preocupado de forma alguma, e 10 significa que você está muito preocupado. 
                 ---
-                """)
+                """, unsafe_allow_html=True)
 
                 with st.form("form_etapa_1"):
                         respostas_areas = []
