@@ -150,9 +150,9 @@ if modo == "Área do Paciente":
                 * **Etapa 3:** Você definirá quais são os seus 3 Valores Principais e 1 Valor Secundário.
                 ---
                 💡 Seu progresso é salvo automaticamente ao final de cada etapa!
+                """, unsafe_allow_html=True)
 
                 
-                """, unsafe_allow_html=True)
                 if st.button("Começar Etapa 1 ➡️", type="primary"):
                     st.session_state["iniciou_etapa1"] = True
                     st.rerun()
