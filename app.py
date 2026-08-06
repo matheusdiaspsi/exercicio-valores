@@ -500,10 +500,7 @@ elif modo == "Painel do Psicólogo":
                             top3 = d_pac["Top_3"].iloc[0]
                             top4 = d_pac["Top_4"].iloc[0]
 
-                            c1 = st.columns(1)
-                            c2 = st.columns(1)
-                            c3 = st.columns(1)
-                            c4 = st.columns(1)
+                            c1, c2, c3, c4 = st.columns(4)
                             c1.metric("1º Valor", top1)
                             c2.metric("2º Valor", top2)
                             c3.metric("3º Valor", top3)
